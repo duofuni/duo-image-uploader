@@ -1,0 +1,19 @@
+{
+  "name": "duo-image-uploader",
+  "version": "1.0.2",
+  "description": "a image uploader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "image",
+    "upload",
+    "uploader"
+  ],
+  "author": "duofuni",
+  "license": "ISC",
+  "dependencies": {
+    "duo-image-viewer": "^1.0.45"
+  }
+}
