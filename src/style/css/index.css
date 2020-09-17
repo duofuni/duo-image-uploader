@@ -21,7 +21,7 @@
   height: 100%;
 }
 
-.duo-image-uploader .image-show-list ul li .image-view {
+.duo-image-uploader .image-show-list ul li .image-option-wrap {
   top: 0;
   left: 0;
   opacity: 0;
@@ -34,13 +34,13 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.duo-image-uploader .image-show-list ul li .image-view .search {
+.duo-image-uploader .image-show-list ul li .image-option-wrap .search {
   width: .5em;
   height: .1em;
-  margin-top: 10px;
-  margin-left: -20px;
+  margin-top: 20px;
+  margin-left: 12px;
   position: relative;
-  margin-right: 10px;
+  display: block;
   box-sizing: border-box;
   background-color: #fff;
   transform: rotate(40deg);
@@ -49,7 +49,7 @@
   border-bottom-right-radius: .15em;
 }
 
-.duo-image-uploader .image-show-list ul li .image-view .search::before {
+.duo-image-uploader .image-show-list ul li .image-option-wrap .search::before {
   content: "";
   left: -.65em;
   bottom: -.3em;
@@ -60,17 +60,19 @@
   border-radius: 50%;
 }
 
-.duo-image-uploader .image-show-list ul li .image-view .false {
+.duo-image-uploader .image-show-list ul li .image-option-wrap .false {
   width: 1em;
   height: .1em;
-  margin-top: -10px;
+  display: block;
+  margin-top: 12px;
+  margin-left: 2px;
   position: relative;
   border-radius: 1em;
   background-color: #fff;
   transform: rotate(45deg);
 }
 
-.duo-image-uploader .image-show-list ul li .image-view .false::after {
+.duo-image-uploader .image-show-list ul li .image-option-wrap .false::after {
   top: 0;
   left: 0;
   content: "";
@@ -82,11 +84,19 @@
   transform: rotate(90deg);
 }
 
-.duo-image-uploader .image-show-list ul li .image-view div {
+.duo-image-uploader .image-show-list ul li .image-option-wrap .image-option {
   top: 50%;
   left: 50%;
+  width: 100%;
   position: absolute;
   transform: translate(-50%, -50%);
+}
+
+.duo-image-uploader .image-show-list ul li .image-option-wrap .image-option-item {
+  width: 25px;
+  height: 25px;
+  margin: 0 auto;
+  display: inline-block;
 }
 
 .duo-image-uploader .image-show-list ul li image {
@@ -97,7 +107,7 @@
   border: 1px solid #cfcfcf;
 }
 
-.duo-image-uploader .image-show-list ul li:hover .image-view {
+.duo-image-uploader .image-show-list ul li:hover .image-option-wrap {
   opacity: 1;
   border-radius: 3px;
 }
@@ -132,10 +142,14 @@
   height: 180px;
 }
 
-.duo-image-uploader .image-add-wrap.id-card-upload {
+.duo-image-uploader .id-card-upload.image-add-wrap {
   width: 282px;
   height: 180px;
   line-height: 180px;
+}
+
+.duo-image-uploader .id-card-upload.image-add-wrap .upload-notice {
+  line-height: 240px !important;
 }
 
 .duo-image-uploader .image-add-wrap .image-add {

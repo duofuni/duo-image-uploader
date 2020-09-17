@@ -11,10 +11,14 @@
           }"
         >
           <img :src="item.url" class="image-item" />
-          <div class="image-view">
-            <div>
-              <div @click="handlePreview(item.url)" class="search"></div>
-              <div @click="handleDelete(item)" class="false"></div>
+          <div class="image-option-wrap">
+            <div class="image-option">
+              <div class="image-option-item" @click="handlePreview(item.url)">
+                <i class="search"></i>
+              </div>
+              <div class="image-option-item" @click="handleDelete(item)">
+                <i class="false"></i>
+              </div>
             </div>
           </div>
         </li>
@@ -25,9 +29,15 @@
         'id-card-upload': isIdCardClass,
         'image-add-wrap': true
       }"
-      v-if="isShowUploadImg"
+      v-if="isShowUploadImage"
     >
-      <input type="file" @change="handleUpload" :accept="acceptType.join(',')" class="image-file" />
+      <input
+        ref="file-input"
+        type="file"
+        @change="handleUpload"
+        :accept="acceptType.join(',')"
+        class="image-file"
+      />
       <div class="image-add">
         <div class="plus"></div>
         <div class="upload-notice">
@@ -52,7 +62,7 @@ export default {
   name: "duoImageUploader",
   data() {
     return {
-      imgFiles: [],
+      imageFiles: [],
       selfImageSrc: [],
       previewUrl: "",
       showViewer: false,
@@ -62,12 +72,12 @@ export default {
     imageSrc() {
       if (this.imageSrc.length) {
         this.selfImageSrc = this.imageSrc;
-        this.imgFiles.push(...this.imageSrc);
+        this.imageFiles.push(...this.imageSrc);
       }
     },
   },
   props: {
-    type: {
+    mode: {
       type: String,
       default: "",
     },
@@ -107,10 +117,10 @@ export default {
     },
     // Make a judgment here: If the type is 'IDcard'
     isIdCardClass() {
-      return this.type === "idCard";
+      return this.mode === "idCard";
     },
     // Make a judgment here: If the maximum limit is exceeded
-    isShowUploadImg() {
+    isShowUploadImage() {
       const disabled = this.disabled ? this.disabled : false;
 
       return this.selfImageSrc.length >= this.limit || disabled ? false : true;
@@ -137,14 +147,17 @@ export default {
         (item) => item.url !== imageItem.url
       );
       this.selfImageSrc = imageSrc;
-      this.imgFiles = [];
+      this.imageFiles = imageSrc;
       this.showViewer = false;
-      this.$emit("uploadChange", this.selfImageSrc);
+      // clear input value
+      this.$refs["file-input"] && (this.$refs["file-input"].value = "");
+
+      this.$emit("uploadChange", this.selfImageSrc, this.imageFiles);
     },
 
     // Local preview
-    previewImg(imgFile) {
-      this.selfImageSrc = this.selfImageSrc.concat(imgFile);
+    previewImg(imageFile) {
+      this.selfImageSrc = this.selfImageSrc.concat(imageFile);
     },
 
     // Upload image
@@ -154,32 +167,35 @@ export default {
         this.$emit("errMessage", propsMessage);
       };
 
-      const imgFile = event.target.files[0];
+      const imageFile = event.target.files[0];
+
+      if (!imageFile) return;
+
       if (
         !imageFormatIsCorrect(
-          imgFile,
+          imageFile,
           this.acceptType,
           this.acceptTypeDescript,
           this.maxSize,
           messageFeedback
         )
-      ) {
+      )
         return;
-      }
 
       let imageData = {
-        name: `${new Date().getTime()}.${imgFile.type.split("/")[1]}`,
-        url: URL.createObjectURL(imgFile),
+        name: `${new Date().getTime()}.${imageFile.type.split("/")[1]}`,
+        url: URL.createObjectURL(imageFile),
+        file: imageFile,
       };
-      this.imgFiles = this.imgFiles.concat(imageData);
-      this.$emit("uploadChange", imgFile, this.imgFiles);
+      this.imageFiles = this.imageFiles.concat(imageData);
+      this.$emit("uploadChange", imageFile, this.imageFiles);
       this.previewImg(imageData);
     },
 
     // Destroy self images
     destroyData() {
       this.selfImageSrc = [];
-      this.imgFiles = [];
+      this.imageFiles = [];
     },
   },
 };
